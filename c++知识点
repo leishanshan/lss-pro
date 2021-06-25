@@ -1,1 +1,69 @@
+protobuf
+一种序列化结构数据的方法，可用于数据通信协议，数据存储等，比XML更小、更快。序列化就是将结构数据或对象转换成能够被存储和传输（如网络传输）的格式（字节序列），之后这个序列化结果能够被重建回原来的结构数据或对象（即反序列化）
+用法：
+1、创建.proto文件，定义数据结构
+Message ***{
+	//字段规则required字段只能也必须出现一次
+	//字段规则optional字段可出现0次或1次
+	//类型：int32、int64、sint32、sint64、string
+	//语法： 字段规则 类型 名称=字段编号
+}
+2、protoc编译.proto文件生成读写接口
+3、调用接口实现序列化、反序列化以及读写
+
+
+constexpr：常量表达式，确定编译时期的常量性（const修饰的常量或表达式只保证运行时期值不可更改）
+
+uint8_t—char
+uint16_t—short
+uint32_t—int
+
+头文件中的#ifndef #define #endif：用来防止该头文件被重复引用。重复引用是指一个头文件在同一个cpp文件中被include了很多次，通常是嵌套造成的。a文件include了c文件，在b中include文件a和文件c时会导致文件c重复包含
+#pragma once 预处理指令，指令表示这个头文件只被编译一次，由编译器保证同一个文件不会被包含多次，但如果头文件有多个拷贝就不能保证不被重复包含
+
+表驱动法
+替代复杂的if/else和switch/case，使用表驱动法，利用映射例如map容器，做成一个[关键字：处理函数]映射结构。选择分支时做成一个查找关键字，执行对应函数的简单函数
+https://blog.csdn.net/zhouyulu/article/details/6860907
+1.关键字处理函数
+该函数利用迭代器在map（m_KeyToHandle）查找关键字，如果找到关键字就将该关键字处的函数地址给pHandle指针，然后运行,注意运行时使用this并以解引用方式调用
+2.关联关键字到处理函数
+将keyword与下边具体执行的函数联系起来
+m_KeyToHandle[KEYWORD]=&TableDrive::HandleKeyA;
+3.具体执行的函数
+
+lambda表达式
+lambda表达式本质就是重载了()运算符的类，这种类就是仿函数，行为像函数的类。所以lambda表达式对象其实就是一个匿名的仿函数。默认情况下，lambda函数总是一个const函数。
+[capture list](params list)    mutable     exception -> return type  {function body}
+[捕获列表]  (形参列表)mutable指示符 异常限定 ->返回类型 {函数体}
+
+捕获列表有三种捕获方式：值捕获、引用捕获和隐式捕获
+int testFunc1()
+{
+    int nTest1 = 23;
+    auto f = [nTest1] (int a, int b) -> int
+    {
+        return a + b + 42 + nTest1;
+        //nTest1 = 333;              不能在lambda表达式中修改捕获变量的值
+    };    //值捕获
+    cout << f(4, 3) << "&nTest1=" << nTest1 << endl;
+}
+void fnTest()
+{
+    int nTest1 = 23;
+    auto f = [&nTest1] (int a, int b) -> int
+    {
+        cout << "In functor before change nTest=" << nTest1 << endl;    //nTest1=23333
+        nTest1 = 131;
+        cout << "In functor after change nTest=" << nTest1 << endl;     // nTest1 = 131
+        return a + b + 42 + nTest1;
+    };   //引用捕获
+    nTest1 = 23333;     
+    cout << f(4, 3) << "&nTest1=" << nTest1 << endl;        //nTest1 = 23333
+}
+
+在函数后加const的意义
+把不改变数据成员的函数加上const关键字提高程序的可读性和可靠性，已定义成const的成员函数不能修改数据成员的值。
+函数前边加const代表函数返回值为const，后面加const表示不可修改class的成员
+
+
 
